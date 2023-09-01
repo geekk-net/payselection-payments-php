@@ -1,0 +1,24 @@
+{
+    "name": "geekk/payselection-payments-php",
+    "description": "Payselection payments",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7",
+        "phpstan/phpstan": "^1.10"
+    },
+    "license": "mit",
+    "autoload": {
+        "psr-4": {
+            "Geekk\\PayselectionPaymentsPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Igor",
+            "email": "igor@geekk.net"
+        }
+    ]
+}
