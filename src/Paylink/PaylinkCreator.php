@@ -18,6 +18,11 @@ class PaylinkCreator
         ?ReceiptData $receiptData = null
     ): PaylinkCreatorResult
     {
-        return new PaylinkCreatorResult();
+        $data = [
+            'PaymentRequest' => $paymentRequestData->getBuiltData()
+        ];
+        $this->apiConnection->post('/webpayments/create', $data);
+
+        return new PaylinkCreatorResult(200, 'http://test-payment-link');
     }
 }

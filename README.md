@@ -5,25 +5,22 @@
 
 $signature = new SignatureCreator($secretKey);
 
-$apiConnection = new ApiConnection($siteId, $signature);
+$apiConnection = new ApiConnection(new Client(), $siteId, $signature);
 
-$paymentRequest = new PaymentRequestData($orderId, $amount, $currecny, $description);
+$paymentRequest = new PaymentRequestData($orderId, $amount, $currency, $description);
 $extraData = new PaymentRequestExtraData();
-$extradata->webhookUrl = 'https://...';
-$extradata->successUrl = 'https://...';
-$extradata->declineUrl = 'https://...';
-$paymentRequest->extraData = $extraData;
-
-$receiptData = new ReceiptData();
-// ...
+$extraData->setWebhookUrl('https://...');
+$extraData->setSuccessUrl('https://...');
+$extraData->setDeclineUrl('https://...');
+$paymentRequest->setExtraData($extraData);
 
 $paylinkCreator = new PaylinkCreator($apiConnection);
-$paymentlinkResult = $paylinkCreator->createPayment($paymentRequest, $receiptData);
+$paylinkResult = $paylinkCreator->createPayment($paymentRequest, null);
 
-if ($paymentlinkResult->success()) {
-    header('Location: '.$paymentlinkResult->getPaymentUrl());
+if ($paylinkResult->success()) {
+    header('Location: ' . $paylinkResult->getPaymentUrl());
     exit;
 }
 
-echo $paymentlinkResult->getErrorCode().' '.$paymentlinkResult->getErrorDescription()
+echo $paylinkResult->getErrorCode().' '.$paylinkResult->getErrorDescription()
 ```

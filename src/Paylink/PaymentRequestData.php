@@ -64,5 +64,8 @@ class PaymentRequestData
         return $this->extraData;
     }
 
-
+    public function getBuiltData(): array
+    {
+        return [];
+    }
 }
