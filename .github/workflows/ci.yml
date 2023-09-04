@@ -12,7 +12,7 @@ jobs:
     - uses: php-actions/composer@v6
     - run: echo "Composer dependencies have been installed"
     - name: PHPStan
-    - uses: php-actions/phpstan@v3
+      uses: php-actions/phpstan@v3
       with:
         configuration: phpstan.neon
         memory_limit: 256M
