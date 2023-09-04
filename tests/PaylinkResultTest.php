@@ -4,6 +4,7 @@ namespace Geekk\PayselectionPaymentsPhp\Tests;
 
 use Geekk\PayselectionPaymentsPhp\Paylink\PaylinkResult;
 use PHPUnit\Framework\TestCase;
+
 class PaylinkResultTest extends TestCase
 {
 

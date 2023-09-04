@@ -48,8 +48,7 @@ class PayselectionApi
     public function createPaylink(
         PaymentRequestData $paymentRequestData,
         ?ReceiptData $receiptData = null
-    ): PaylinkResult
-    {
+    ): PaylinkResult {
         $data = [
             'PaymentRequest' => $paymentRequestData->getBuiltData()
         ];

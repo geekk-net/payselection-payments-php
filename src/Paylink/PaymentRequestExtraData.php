@@ -55,6 +55,4 @@ class PaymentRequestExtraData
 
         return $data;
     }
-
-
 }
