@@ -37,9 +37,9 @@ class PaylinkCreateTest extends TestCase
 
         $paymentRequest = new PaymentRequestData($orderId, $amount, $currency, $description);
         $extraData = new PaymentRequestExtraData();
-        $extraData->setWebhookUrl('https://...');
-        $extraData->setSuccessUrl('https://...');
-        $extraData->setDeclineUrl('https://...');
+        $extraData->setWebhookUrl('webhook_url');
+        $extraData->setSuccessUrl('success_url');
+        $extraData->setDeclineUrl('decline_url');
         $paymentRequest->setExtraData($extraData);
 
         $paylinkCreator = new PayselectionApi($client, $siteId, new SignatureCreator($secretKey));
@@ -66,6 +66,12 @@ class PaylinkCreateTest extends TestCase
         $requestData = json_decode($body, true);
         $this->assertIsArray($requestData);
         $this->assertArrayHasKey('PaymentRequest', $requestData);
+        $this->assertArrayHasKey('ExtraData', $requestData['PaymentRequest']);
+        $extraData = $requestData['PaymentRequest']['ExtraData'];
+
+        $this->assertEquals('webhook_url', $extraData['WebhookUrl'] ?? null);
+        $this->assertEquals('success_url', $extraData['SuccessUrl'] ?? null);
+        $this->assertEquals('decline_url', $extraData['DeclineUrl'] ?? null);
         // {"PaymentRequest":{"OrderId":"14710ea1df","Amount":"9.10","Currency":"RUB","Description":"Some goods"}}.
 
         $this->assertTrue($paylinkResult->success());

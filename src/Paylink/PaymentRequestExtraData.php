@@ -8,21 +8,11 @@ class PaymentRequestExtraData
     private $successUrl;
     private $declineUrl;
     private $webhookUrl;
-    private $resultUrl;
-
-    public function getSuccessUrl(): ?string
-    {
-        return $this->successUrl;
-    }
+    private $returnUrl;
 
     public function setSuccessUrl(?string $successUrl): void
     {
         $this->successUrl = $successUrl;
-    }
-
-    public function getDeclineUrl(): ?string
-    {
-        return $this->declineUrl;
     }
 
     /**
@@ -33,27 +23,38 @@ class PaymentRequestExtraData
         $this->declineUrl = $declineUrl;
     }
 
-    public function getWebhookUrl(): ?string
-    {
-        return $this->webhookUrl;
-    }
-
     public function setWebhookUrl(?string $webhookUrl): void
     {
         $this->webhookUrl = $webhookUrl;
     }
 
-    public function getResultUrl(): ?string
+    public function setReturnUrl(?string $returnUrl): void
     {
-        return $this->resultUrl;
+        $this->returnUrl = $returnUrl;
     }
 
-    public function setResultUrl(?string $resultUrl): void
+    public function getBuiltData(): array
     {
-        $this->resultUrl = $resultUrl;
+        $data = [];
+
+        if (!empty($this->returnUrl)) {
+            $data['ReturnUrl'] = $this->returnUrl;
+        }
+
+        if (!empty($this->successUrl)) {
+            $data['SuccessUrl'] = $this->successUrl;
+        }
+
+        if (!empty($this->declineUrl)) {
+            $data['DeclineUrl'] = $this->declineUrl;
+        }
+
+        if (!empty($this->webhookUrl)) {
+            $data['WebhookUrl'] = $this->webhookUrl;
+        }
+
+        return $data;
     }
-
-
 
 
 }

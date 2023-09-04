@@ -9,6 +9,10 @@ class PaymentRequestData
     private $amount;
     private $currency;
     private $description;
+
+    /**
+     * @var PaymentRequestExtraData $extraData
+     */
     private $extraData;
 
     public function __construct(string $orderId, float $amount, string $currency, string $description)
@@ -56,14 +60,6 @@ class PaymentRequestData
         return $this->description;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getExtraData(): ?PaymentRequestExtraData
-    {
-        return $this->extraData;
-    }
-
     public function getBuiltData(): array
     {
         $data = [
@@ -72,6 +68,10 @@ class PaymentRequestData
             "Currency" => $this->getCurrency(),
             "Description" => $this->getDescription()
         ];
+
+        if (!empty($this->extraData)) {
+            $data['ExtraData'] = $this->extraData->getBuiltData();
+        }
 
         return $data;
     }
