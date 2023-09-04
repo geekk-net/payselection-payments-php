@@ -11,6 +11,11 @@ jobs:
     - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
     - uses: php-actions/composer@v6
     - run: echo "Composer dependencies have been installed"
+    - name: PHP Code Sniffer
+      uses: php-actions/phpcs@v1
+      with:
+        php_version: 7.2
+        standard: phpcs.xml
     - name: PHPStan
       uses: php-actions/phpstan@v3
       with:
