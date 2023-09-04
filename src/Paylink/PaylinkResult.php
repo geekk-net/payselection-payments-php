@@ -25,7 +25,11 @@ class PaylinkResult
      */
     private $errorDescription = null;
 
-    public function __construct(int $httpCode, string $payload)
+    /**
+     * @param int $httpCode
+     * @param ?string $payload
+     */
+    public function __construct(int $httpCode, ?string $payload)
     {
         $this->success = $httpCode == 200;
 

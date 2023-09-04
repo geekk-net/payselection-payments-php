@@ -76,7 +76,7 @@ class PaymentRequestData
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, array<string, string>|string>
      */
     public function getBuiltData(): array
     {

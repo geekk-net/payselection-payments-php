@@ -49,6 +49,9 @@ class PayselectionApi
         ];
 
         $requestId = $this->makeRequestId();
+        /**
+         * @var string $json
+         */
         $json = json_encode($data);
         $paramsToSign = ['POST', $action, $this->siteId, $requestId, $json];
 

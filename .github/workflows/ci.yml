@@ -11,6 +11,11 @@ jobs:
     - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
     - uses: php-actions/composer@v6
     - run: echo "Composer dependencies have been installed"
+    - name: PHPStan
+    - uses: php-actions/phpstan@v3
+      with:
+        configuration: phpstan.neon
+        memory_limit: 256M
     - name: PHPUnit tests
       uses: php-actions/phpunit@v3
       with:
