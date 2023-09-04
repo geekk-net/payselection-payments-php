@@ -21,9 +21,28 @@ class PayselectionApi
         $this->signatureCreator = $signatureCreator;
     }
 
-    public function post(string $action, ?array $data)
+    private function makeRequestId(): string
     {
-        //$this->client->request('POST', self::BASE_URL.$action, [ 'json' => $data ]);
+        return bin2hex(random_bytes(16));
+    }
+
+    private function post(string $action, ?array $data)
+    {
+        $requestId = $this->makeRequestId();
+        $json = json_encode($data);
+        $paramsToSign = ['POST', $action, $this->siteId, $requestId, $json];
+
+        $options = [
+            'http_errors' => false,
+            'json' => $data,
+            'headers' => [
+                'X-SITE-ID' => $this->siteId,
+                'X-REQUEST-ID' => $requestId,
+                'X-REQUEST-SIGNATURE' => $this->signatureCreator->makeSignature($paramsToSign)
+            ]
+        ];
+
+        return $this->client->request('POST', self::BASE_URL.$action, $options);
     }
 
     public function createPaylink(
@@ -34,8 +53,8 @@ class PayselectionApi
         $data = [
             'PaymentRequest' => $paymentRequestData->getBuiltData()
         ];
-        $this->post('/webpayments/create', $data);
+        $response = $this->post('/webpayments/create', $data);
 
-        return new PaylinkResult(200, 'http://test-payment-link');
+        return new PaylinkResult($response->getStatusCode(), $response->getBody());
     }
 }

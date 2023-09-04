@@ -14,7 +14,7 @@ class PaymentRequestData
     public function __construct(string $orderId, float $amount, string $currency, string $description)
     {
         $this->description = $description;
-        $this->currency = $currency;
+        $this->currency = strtoupper($currency);
         $this->amount = $amount;
         $this->orderId = $orderId;
     }
@@ -66,6 +66,13 @@ class PaymentRequestData
 
     public function getBuiltData(): array
     {
-        return [];
+        $data = [
+            "OrderId" => $this->getOrderId(),
+            "Amount" => number_format($this->getAmount(), 2, '.', ''),
+            "Currency" => $this->getCurrency(),
+            "Description" => $this->getDescription()
+        ];
+
+        return $data;
     }
 }

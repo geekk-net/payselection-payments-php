@@ -11,8 +11,10 @@ class SignatureCreator
         $this->secretKey = $secretKey;
     }
 
-    public function makeSignature(string $data): string
+    public function makeSignature(array $data): string
     {
-        return '';
+        $string = implode("\n", $data);
+
+        return hash_hmac('sha256', $string, $this->secretKey, false);
     }
 }
