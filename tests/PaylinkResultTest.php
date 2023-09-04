@@ -2,15 +2,15 @@
 
 namespace Geekk\PayselectionPaymentsPhp\Tests;
 
-use Geekk\PayselectionPaymentsPhp\Paylink\PaylinkCreatorResult;
+use Geekk\PayselectionPaymentsPhp\Paylink\PaylinkResult;
 use PHPUnit\Framework\TestCase;
-class PaylinkCreatorResultTest extends TestCase
+class PaylinkResultTest extends TestCase
 {
 
     public function testSuccessResponse()
     {
         $paymentUrl = 'http://somepath';
-        $paylinkResult = new PaylinkCreatorResult(200, $paymentUrl);
+        $paylinkResult = new PaylinkResult(200, $paymentUrl);
 
         $this->assertTrue($paylinkResult->success());
         $this->assertEquals($paymentUrl, $paylinkResult->getPaymentUrl());
@@ -23,7 +23,7 @@ class PaylinkCreatorResultTest extends TestCase
             "Description" => "Error description"
         ];
         $payload = json_encode($errorData);
-        $paylinkResult = new PaylinkCreatorResult(400, $payload);
+        $paylinkResult = new PaylinkResult(400, $payload);
 
         $this->assertFalse($paylinkResult->success());
         $this->assertEquals($errorData['Code'], $paylinkResult->getErrorCode());
@@ -32,13 +32,13 @@ class PaylinkCreatorResultTest extends TestCase
 
     public function testEmptyErrorData()
     {
-        $paylinkResult = new PaylinkCreatorResult(400, '');
+        $paylinkResult = new PaylinkResult(400, '');
 
         $this->assertFalse($paylinkResult->success());
         $this->assertNull($paylinkResult->getErrorCode());
         $this->assertEquals('Unknown error', $paylinkResult->getErrorDescription());
 
-        $paylinkResult = new PaylinkCreatorResult(400, json_encode([]));
+        $paylinkResult = new PaylinkResult(400, json_encode([]));
 
         $this->assertFalse($paylinkResult->success());
         $this->assertNull($paylinkResult->getErrorCode());

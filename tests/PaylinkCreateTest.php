@@ -2,8 +2,7 @@
 
 namespace Geekk\PayselectionPaymentsPhp\Tests;
 
-use Geekk\PayselectionPaymentsPhp\ApiConnection;
-use Geekk\PayselectionPaymentsPhp\Paylink\PaylinkCreator;
+use Geekk\PayselectionPaymentsPhp\PayselectionApi;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestData;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestExtraData;
 use Geekk\PayselectionPaymentsPhp\SignatureCreator;
@@ -11,7 +10,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use PHPUnit\Framework\TestCase;
-class PaylinkCreatorTest extends TestCase
+class PaylinkCreateTest extends TestCase
 {
     public function testCreatePayment()
     {
@@ -29,9 +28,6 @@ class PaylinkCreatorTest extends TestCase
         $handlerStack->push($history);
         $client = new Client(['handler' => $handlerStack]);
 
-        $signature = new SignatureCreator($secretKey);
-        $apiConnection = new ApiConnection($client, $siteId, $signature);
-
         $paymentRequest = new PaymentRequestData($orderId, $amount, $currency, $description);
         $extraData = new PaymentRequestExtraData();
         $extraData->setWebhookUrl('https://...');
@@ -39,8 +35,8 @@ class PaylinkCreatorTest extends TestCase
         $extraData->setDeclineUrl('https://...');
         $paymentRequest->setExtraData($extraData);
 
-        $paylinkCreator = new PaylinkCreator($apiConnection);
-        $paylinkResult = $paylinkCreator->createPaymentLink($paymentRequest);
+        $paylinkCreator = new PayselectionApi($client, $siteId, new SignatureCreator($secretKey));
+        $paylinkResult = $paylinkCreator->createPaylink($paymentRequest);
 
         $this->assertTrue($paylinkResult->success());
     }

@@ -2,7 +2,7 @@
 
 namespace Geekk\PayselectionPaymentsPhp\Paylink;
 
-class PaylinkCreatorResult
+class PaylinkResult
 {
 
     private $success;
