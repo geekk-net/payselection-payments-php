@@ -5,9 +5,24 @@ namespace Geekk\PayselectionPaymentsPhp\Paylink;
 class PaymentRequestExtraData
 {
 
+    /**
+     * @var ?string
+     */
     private $successUrl;
+
+    /**
+     * @var ?string
+     */
     private $declineUrl;
+
+    /**
+     * @var ?string
+     */
     private $webhookUrl;
+
+    /**
+     * @var ?string
+     */
     private $returnUrl;
 
     public function setSuccessUrl(?string $successUrl): void
@@ -30,6 +45,9 @@ class PaymentRequestExtraData
         $this->returnUrl = $returnUrl;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getBuiltData(): array
     {
         $data = [];

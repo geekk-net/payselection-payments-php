@@ -5,9 +5,24 @@ namespace Geekk\PayselectionPaymentsPhp\Paylink;
 class PaymentRequestData
 {
 
+    /**
+     * @var string
+     */
     private $orderId;
+
+    /**
+     * @var float
+     */
     private $amount;
+
+    /**
+     * @var string
+     */
     private $currency;
+
+    /**
+     * @var string
+     */
     private $description;
 
     /**
@@ -23,7 +38,7 @@ class PaymentRequestData
         $this->orderId = $orderId;
     }
 
-    public function setExtraData(PaymentRequestExtraData $extraData)
+    public function setExtraData(PaymentRequestExtraData $extraData): void
     {
         $this->extraData = $extraData;
     }
@@ -60,6 +75,9 @@ class PaymentRequestData
         return $this->description;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getBuiltData(): array
     {
         $data = [

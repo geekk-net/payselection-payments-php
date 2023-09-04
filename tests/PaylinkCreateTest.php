@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class PaylinkCreateTest extends TestCase
 {
-    public function testCreatePayment()
+    public function testCreatePayment(): void
     {
         $secretKey = 'test-secret-key';
         $siteId = "1001";

@@ -10,8 +10,20 @@ use GuzzleHttp\Client;
 class PayselectionApi
 {
     const BASE_URL = 'https://webform.payselection.com';
+
+    /**
+     * @var string
+     */
     private $siteId;
+
+    /**
+     * @var SignatureCreator
+     */
     private $signatureCreator;
+
+    /**
+     * @var Client
+     */
     private $client;
 
     public function __construct(Client $client, string $siteId, SignatureCreator $signatureCreator)
@@ -26,8 +38,16 @@ class PayselectionApi
         return bin2hex(random_bytes(16));
     }
 
-    private function post(string $action, ?array $data)
-    {
+    public function createPaylink(
+        PaymentRequestData $paymentRequestData,
+        ?ReceiptData $receiptData = null
+    ): PaylinkResult {
+
+        $action = '/webpayments/create';
+        $data = [
+            'PaymentRequest' => $paymentRequestData->getBuiltData()
+        ];
+
         $requestId = $this->makeRequestId();
         $json = json_encode($data);
         $paramsToSign = ['POST', $action, $this->siteId, $requestId, $json];
@@ -42,17 +62,7 @@ class PayselectionApi
             ]
         ];
 
-        return $this->client->request('POST', self::BASE_URL.$action, $options);
-    }
-
-    public function createPaylink(
-        PaymentRequestData $paymentRequestData,
-        ?ReceiptData $receiptData = null
-    ): PaylinkResult {
-        $data = [
-            'PaymentRequest' => $paymentRequestData->getBuiltData()
-        ];
-        $response = $this->post('/webpayments/create', $data);
+        $response = $this->client->request('POST', self::BASE_URL.$action, $options);
 
         return new PaylinkResult($response->getStatusCode(), $response->getBody());
     }

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class PaylinkResultTest extends TestCase
 {
 
-    public function testSuccessResponse()
+    public function testSuccessResponse(): void
     {
         $paymentUrl = 'http://somepath';
         $paylinkResult = new PaylinkResult(200, $paymentUrl);
@@ -17,7 +17,7 @@ class PaylinkResultTest extends TestCase
         $this->assertEquals($paymentUrl, $paylinkResult->getPaymentUrl());
     }
 
-    public function testErrorResponse()
+    public function testErrorResponse(): void
     {
         $errorData = [
             "Code" => "ERROR_CODE_01",
@@ -31,7 +31,7 @@ class PaylinkResultTest extends TestCase
         $this->assertEquals($errorData['Description'], $paylinkResult->getErrorDescription());
     }
 
-    public function testEmptyErrorData()
+    public function testEmptyErrorData(): void
     {
         $paylinkResult = new PaylinkResult(400, '');
 

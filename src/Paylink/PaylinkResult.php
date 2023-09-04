@@ -5,10 +5,24 @@ namespace Geekk\PayselectionPaymentsPhp\Paylink;
 class PaylinkResult
 {
 
+    /**
+     * @var bool
+     */
     private $success;
+
+    /**
+     * @var string|null
+     */
     private $paymentUrl = null;
 
+    /**
+     * @var string|null
+     */
     private $errorCode = null;
+
+    /**
+     * @var string|null
+     */
     private $errorDescription = null;
 
     public function __construct(int $httpCode, string $payload)
