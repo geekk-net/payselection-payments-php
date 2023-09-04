@@ -19,7 +19,7 @@ class PaylinkCreateTest extends TestCase
     public function testCreatePayment()
     {
         $secretKey = 'test-secret-key';
-        $siteId = 1001;
+        $siteId = "1001";
 
         $orderId = bin2hex(random_bytes(5));
         $amount = 9.10;

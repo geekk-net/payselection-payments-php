@@ -11,7 +11,7 @@ class PaymentRequestData
     private $description;
 
     /**
-     * @var PaymentRequestExtraData $extraData
+     * @var ?PaymentRequestExtraData $extraData
      */
     private $extraData;
 

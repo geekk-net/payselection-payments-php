@@ -15,9 +15,6 @@ class PaymentRequestExtraData
         $this->successUrl = $successUrl;
     }
 
-    /**
-     * @param mixed $declineUrl
-     */
     public function setDeclineUrl(?string $declineUrl): void
     {
         $this->declineUrl = $declineUrl;
