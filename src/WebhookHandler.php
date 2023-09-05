@@ -5,6 +5,10 @@ namespace Geekk\PayselectionPaymentsPhp;
 class WebhookHandler
 {
 
+    const EVENT_PAYMENT = 'payment';
+    const EVENT_FAIL = 'fail';
+    const EVENT_REFUND = 'refund';
+
     /**
      * @var SignatureCreator
      */
@@ -85,7 +89,7 @@ class WebhookHandler
 
     public function getEventName(): ?string
     {
-        return $this->data['Event'] ?? null;
+        return isset($this->data['Event']) ? strtolower($this->data['Event']) : null;
     }
 
     public function getOrderId(): ?string
@@ -111,5 +115,18 @@ class WebhookHandler
     public function getDateTime(): ?string
     {
         return $this->data['DateTime'] ?? null;
+    }
+
+    public function getCardMasked(): ?string
+    {
+        return $this->data['CardMasked'] ?? null;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getOneStepEventTypes(): array
+    {
+        return [self::EVENT_PAYMENT, self::EVENT_FAIL, self::EVENT_REFUND];
     }
 }

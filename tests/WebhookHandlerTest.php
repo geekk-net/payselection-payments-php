@@ -54,6 +54,7 @@ class WebhookHandlerTest extends TestCase
             "Amount" => "52.10",
             "Currency" => "RUB",
             "DateTime" => "16.09.2019 16.52.41",
+            "CardMasked" => "4539********2773",
             "IsTest" => 1
         ];
         $json = json_encode($data);
@@ -61,9 +62,10 @@ class WebhookHandlerTest extends TestCase
         $handler->handle('', [], $json);
         $this->assertEquals("H5D6223aA", $handler->getOrderId());
         $this->assertEquals("52.10", $handler->getAmount());
-        $this->assertEquals("Payment", $handler->getEventName());
+        $this->assertEquals("payment", $handler->getEventName());
         $this->assertEquals("RUB", $handler->getCurrency());
         $this->assertEquals("PS00000000000007", $handler->getTransactionId());
+        $this->assertEquals("4539********2773", $handler->getCardMasked());
         $this->assertEquals("16.09.2019 16.52.41", $handler->getDateTime());
     }
 }
