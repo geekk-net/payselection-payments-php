@@ -72,7 +72,7 @@ class WebhookHandler
 
     public function getSignature(): ?string
     {
-        return $this->getAllHeaders()['X-REQUEST-SIGNATURE'] ?? null;
+        return $this->getAllHeaders()['X-WEBHOOK-SIGNATURE'] ?? null;
     }
 
     public function getSiteId(): ?string
@@ -80,7 +80,7 @@ class WebhookHandler
         return $this->getAllHeaders()['X-SITE-ID'] ?? null;
     }
 
-    public function isCorrect(): bool
+    public function hasCorrectSignature(): bool
     {
         $dataToSign = ['POST', $this->requestUri, $this->getSiteId(), $this->body];
 

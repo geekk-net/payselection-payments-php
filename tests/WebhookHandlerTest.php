@@ -31,17 +31,17 @@ class WebhookHandlerTest extends TestCase
         // Check signature for correct key
         $headers = [
             'X-SITE-ID' => $siteId,
-            'X-REQUEST-SIGNATURE' => (new SignatureCreator($secretKey))
+            'X-WEBHOOK-SIGNATURE' => (new SignatureCreator($secretKey))
                 ->makeSignature($dataToSign)
         ];
         $handler->handle($requestUrl, $headers, $json);
-        $this->assertTrue($handler->isCorrect());
+        $this->assertTrue($handler->hasCorrectSignature());
 
         // Check signature for wrong key
-        $headers['X-REQUEST-SIGNATURE'] = (new SignatureCreator('another-key'))
+        $headers['X-WEBHOOK-SIGNATURE'] = (new SignatureCreator('another-key'))
                 ->makeSignature($dataToSign);
         $handler->handle($requestUrl, $headers, $json);
-        $this->assertFalse($handler->isCorrect());
+        $this->assertFalse($handler->hasCorrectSignature());
     }
 
     public function testParameters(): void
