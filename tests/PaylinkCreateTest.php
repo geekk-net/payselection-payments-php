@@ -29,7 +29,7 @@ class PaylinkCreateTest extends TestCase
         $container = [];
         $history = Middleware::history($container);
         $mock = new MockHandler([
-            new Response(200, [], 'http://test-payment-link'),
+            new Response(201, [], 'http://test-payment-link'),
             //new Response(400, [], json_encode(['Code' => 'ERROR_01', 'Description' => 'Unexpected error'])),
         ]);
         $handlerStack = HandlerStack::create($mock);

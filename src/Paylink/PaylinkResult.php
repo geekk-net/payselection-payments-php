@@ -31,7 +31,7 @@ class PaylinkResult
      */
     public function __construct(int $httpCode, ?string $payload)
     {
-        $this->success = $httpCode == 200;
+        $this->success = $httpCode == 201;
 
         if ($this->success) {
             $this->paymentUrl = $payload;
