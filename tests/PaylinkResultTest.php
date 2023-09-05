@@ -11,7 +11,7 @@ class PaylinkResultTest extends TestCase
     public function testSuccessResponse(): void
     {
         $paymentUrl = 'http://somepath';
-        $paylinkResult = new PaylinkResult(201, $paymentUrl);
+        $paylinkResult = new PaylinkResult(201, "\"$paymentUrl\"");
 
         $this->assertTrue($paylinkResult->success());
         $this->assertEquals($paymentUrl, $paylinkResult->getPaymentUrl());

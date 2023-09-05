@@ -34,7 +34,8 @@ class PaylinkResult
         $this->success = $httpCode == 201;
 
         if ($this->success) {
-            $this->paymentUrl = $payload;
+            $url = json_decode($payload);
+            $this->paymentUrl = is_string($url) ? $url : null;
         } else {
             $errorData = json_decode($payload, true);
             $this->errorDescription = 'Unknown error';

@@ -48,7 +48,7 @@ class WebhookHandler
     public function handle(string $requestUri, ?array $headers, ?string $body): void
     {
         $this->requestUri = $requestUri;
-        $this->headers = $headers ?? [];
+        $this->headers = array_change_key_case($headers ?? [], CASE_UPPER);
         $data = json_decode($body, true);
         $this->body = $body;
         $this->data = empty($data) ? null : $data;
