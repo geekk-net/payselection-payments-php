@@ -48,7 +48,7 @@ $webhook = new WebhookHandler(new SignatureCreator($secretKey));
 
 $webhook->handle($requestUrl, $headers, $data);
 
-if ( ! $webhook->isCorrect()) {
+if ( ! $webhook->hasCorrectSignature()) {
     log("Signature error");
     return;
 }
