@@ -6,7 +6,6 @@ use DateTimeImmutable;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ClientData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\CompanyData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ItemData;
-use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\PaymentData;
 
 class ReceiptData
 {
