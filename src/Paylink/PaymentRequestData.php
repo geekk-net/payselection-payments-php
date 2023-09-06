@@ -82,7 +82,7 @@ class PaymentRequestData
     {
         $data = [
             "OrderId" => $this->getOrderId(),
-            "Amount" => number_format($this->getAmount(), 2, '.', ''),
+            "Amount" => Formatter::floatToString($this->getAmount()),
             "Currency" => $this->getCurrency(),
             "Description" => $this->getDescription()
         ];

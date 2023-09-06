@@ -20,7 +20,7 @@ $extraData->setDeclineUrl('https://...');
 $paymentRequest->setExtraData($extraData);
 
 $paylinkCreator = new PayselectionApi(new Client(), $siteId, new SignatureCreator($secretKey));
-$paylinkResult = $paylinkCreator->createPaylink($paymentRequest, null);
+$paylinkResult = $paylinkCreator->createPaylink($paymentRequest);
 
 if ($paylinkResult->success()) {
     header('Location: ' . $paylinkResult->getPaymentUrl());
@@ -28,6 +28,24 @@ if ($paylinkResult->success()) {
 }
 
 echo $paylinkResult->getErrorCode().' '.$paylinkResult->getErrorDescription()
+```
+
+## Add receipt for to payment
+
+```php
+use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
+use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ClientData;
+use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\CompanyData;
+use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ItemData;
+
+// ...
+
+$company = new CompanyData('YOUR_INN', 'https://shop-site.net');
+$client = new ClientData('user@mail.com');
+$items = [new ItemData(7.95, 'Some digital goods')];
+$receipt = new ReceiptData($company, $client, $items);
+
+$paylinkResult = $paylinkCreator->createPaylink($paymentRequest, $receipt);
 ```
 
 ## Process a webhook

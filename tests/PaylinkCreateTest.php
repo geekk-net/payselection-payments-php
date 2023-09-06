@@ -2,6 +2,10 @@
 
 namespace Geekk\PayselectionPaymentsPhp\Tests;
 
+use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
+use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ClientData;
+use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\CompanyData;
+use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ItemData;
 use Geekk\PayselectionPaymentsPhp\PayselectionApi;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestData;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestExtraData;
@@ -43,8 +47,11 @@ class PaylinkCreateTest extends TestCase
         $extraData->setDeclineUrl('decline_url');
         $paymentRequest->setExtraData($extraData);
 
+        $items = [new ItemData($amount, 'note')];
+        $receipt = new ReceiptData(new CompanyData('0', 'a'), new ClientData('u@mail.com'), $items);
+
         $paylinkCreator = new PayselectionApi($client, $siteId, new SignatureCreator($secretKey));
-        $paylinkResult = $paylinkCreator->createPaylink($paymentRequest);
+        $paylinkResult = $paylinkCreator->createPaylink($paymentRequest, $receipt);
 
         $this->assertEquals(1, count($container));
         $transaction = $container[0];
@@ -73,7 +80,11 @@ class PaylinkCreateTest extends TestCase
         $this->assertEquals('webhook_url', $extraData['WebhookUrl'] ?? null);
         $this->assertEquals('success_url', $extraData['SuccessUrl'] ?? null);
         $this->assertEquals('decline_url', $extraData['DeclineUrl'] ?? null);
-        // {"PaymentRequest":{"OrderId":"14710ea1df","Amount":"9.10","Currency":"RUB","Description":"Some goods"}}.
+
+        $this->assertArrayHasKey('ReceiptData', $requestData);
+        $this->assertIsArray($requestData['ReceiptData']);
+        $this->assertArrayHasKey('timestamp', $requestData['ReceiptData']);
+        $this->assertArrayHasKey('receipt', $requestData['ReceiptData']);
 
         $this->assertTrue($paylinkResult->success());
     }

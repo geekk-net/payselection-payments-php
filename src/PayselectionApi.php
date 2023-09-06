@@ -45,8 +45,12 @@ class PayselectionApi
 
         $action = '/webpayments/create';
         $data = [
-            'PaymentRequest' => $paymentRequestData->getBuiltData()
+            'PaymentRequest' => $paymentRequestData->getBuiltData(),
         ];
+
+        if (!empty($receiptData)) {
+            $data['ReceiptData'] = $receiptData->getBuiltData();
+        }
 
         $requestId = $this->makeRequestId();
         /**
