@@ -45,8 +45,10 @@ class ReceiptDataTest extends TestCase
         $item = $receiptDetails['items'][0];
         $this->assertEquals($paymentDescription, $item['name'] ?? null);
         $this->assertEquals($paymentAmount, $item['price'] ?? null);
+        $this->assertIsFloat($item['price'] ?? null);
         $this->assertEquals(1, $item['quantity'] ?? null);
         $this->assertEquals($paymentAmount, $item['sum'] ?? null);
+        $this->assertIsFloat($item['sum'] ?? null);
 
         $this->assertIsArray($receiptDetails['payments']);
         $this->assertEquals(1, count($receiptDetails['payments']));
@@ -55,5 +57,6 @@ class ReceiptDataTest extends TestCase
         $this->assertEquals($paymentAmount, $payment['sum'] ?? null);
 
         $this->assertEquals($paymentAmount, $receiptDetails['total']);
+        $this->assertIsFloat($receiptDetails['total']);
     }
 }

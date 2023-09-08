@@ -71,9 +71,9 @@ class ItemData
     {
         return [
             'name' => $this->description,
-            'price' => Formatter::floatToString($this->price),
+            'price' => floatval(Formatter::floatToString($this->price)),
             'quantity' => $this->quantity,
-            'sum' => Formatter::floatToString($this->getSum()),
+            'sum' => floatval(Formatter::floatToString($this->getSum())),
             'payment_method' => strtolower($this->paymentMethod),
             'payment_object' => strtolower($this->paymentObject),
             'vat' => [
