@@ -84,7 +84,7 @@ class ReceiptData
         $paymentsSum = Formatter::floatToString($this->getPaymentSum());
 
         return [
-            'timestamp' => (new DateTimeImmutable())->format('d.m.Y H:i'),
+            'timestamp' => (new DateTimeImmutable())->format('d.m.Y H:i:s'),
             'receipt' => [
                 'client' => $this->client->getBuiltData(),
                 'company' => $this->company->getBuiltData(),
