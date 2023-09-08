@@ -1,5 +1,7 @@
 # Payselection payments
 
+![CI workflow](https://github.com/geekk-net/payselection-payments-php/actions/workflows/ci.yml/badge.svg)
+
 ## Redirect to payment
 
 ```php
