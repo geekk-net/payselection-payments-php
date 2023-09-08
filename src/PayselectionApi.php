@@ -2,6 +2,7 @@
 
 namespace Geekk\PayselectionPaymentsPhp;
 
+use Geekk\PayselectionPaymentsPhp\Paylink\CustomerInfoData;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaylinkResult;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
@@ -40,7 +41,8 @@ class PayselectionApi
 
     public function createPaylink(
         PaymentRequestData $paymentRequestData,
-        ?ReceiptData $receiptData = null
+        ?ReceiptData $receiptData = null,
+        ?CustomerInfoData $customerInfoData = null
     ): PaylinkResult {
 
         $action = '/webpayments/create';
@@ -50,6 +52,10 @@ class PayselectionApi
 
         if (!empty($receiptData)) {
             $data['ReceiptData'] = $receiptData->getBuiltData();
+        }
+
+        if (!empty($customerInfoData)) {
+            $data['CustomerInfo'] = $customerInfoData->getBuiltData();
         }
 
         $requestId = $this->makeRequestId();

@@ -2,6 +2,7 @@
 
 namespace Geekk\PayselectionPaymentsPhp\Tests;
 
+use Geekk\PayselectionPaymentsPhp\Paylink\CustomerInfoData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ClientData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\CompanyData;
@@ -29,6 +30,7 @@ class PaylinkCreateTest extends TestCase
         $amount = 9.10;
         $currency = 'RUB';
         $description = 'Some goods';
+        $email = 'u@mail.com';
 
         $container = [];
         $history = Middleware::history($container);
@@ -48,10 +50,12 @@ class PaylinkCreateTest extends TestCase
         $paymentRequest->setExtraData($extraData);
 
         $items = [new ItemData($amount, 'note')];
-        $receipt = new ReceiptData(new CompanyData('0', 'a'), new ClientData('u@mail.com'), $items);
+        $receipt = new ReceiptData(new CompanyData('0', 'a'), new ClientData($email), $items);
+
+        $customerInfo = new CustomerInfoData($email);
 
         $paylinkCreator = new PayselectionApi($client, $siteId, new SignatureCreator($secretKey));
-        $paylinkResult = $paylinkCreator->createPaylink($paymentRequest, $receipt);
+        $paylinkResult = $paylinkCreator->createPaylink($paymentRequest, $receipt, $customerInfo);
 
         $this->assertEquals(1, count($container));
         $transaction = $container[0];
@@ -75,7 +79,12 @@ class PaylinkCreateTest extends TestCase
         $this->assertIsArray($requestData);
         $this->assertArrayHasKey('PaymentRequest', $requestData);
         $this->assertArrayHasKey('ExtraData', $requestData['PaymentRequest']);
+        $this->assertArrayHasKey('CustomerInfo', $requestData);
         $extraData = $requestData['PaymentRequest']['ExtraData'];
+
+        $this->assertEquals($orderId, $requestData['PaymentRequest']['OrderId']);
+        $this->assertEquals($amount, $requestData['PaymentRequest']['Amount']);
+        $this->assertEquals($currency, $requestData['PaymentRequest']['Currency']);
 
         $this->assertEquals('webhook_url', $extraData['WebhookUrl'] ?? null);
         $this->assertEquals('success_url', $extraData['SuccessUrl'] ?? null);
@@ -85,6 +94,9 @@ class PaylinkCreateTest extends TestCase
         $this->assertIsArray($requestData['ReceiptData']);
         $this->assertArrayHasKey('timestamp', $requestData['ReceiptData']);
         $this->assertArrayHasKey('receipt', $requestData['ReceiptData']);
+
+        $this->assertArrayHasKey('Email', $requestData['CustomerInfo']);
+        $this->assertEquals($email, $requestData['CustomerInfo']['ReceiptEmail']);
 
         $this->assertTrue($paylinkResult->success());
     }
