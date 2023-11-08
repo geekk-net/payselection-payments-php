@@ -2,14 +2,14 @@
 
 namespace Geekk\PayselectionPaymentsPhp\Tests;
 
+use DateInterval;
+use DateTimeImmutable;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ClientData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\CompanyData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ItemData;
-use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData\RecurringData;
+use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData;
 use PHPUnit\Framework\TestCase;
-use DateTimeImmutable;
-use DateInterval;
 
 class RecurringDataTest extends TestCase
 {

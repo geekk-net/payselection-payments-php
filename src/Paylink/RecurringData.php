@@ -1,9 +1,6 @@
 <?php
 
-namespace Geekk\PayselectionPaymentsPhp\Paylink\RecurringData;
-
-use Geekk\PayselectionPaymentsPhp\Paylink\Formatter;
-use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
+namespace Geekk\PayselectionPaymentsPhp\Paylink;
 
 class RecurringData
 {
@@ -165,7 +162,7 @@ class RecurringData
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMaxPeriods(): ?string
     {

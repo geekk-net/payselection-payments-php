@@ -6,7 +6,7 @@ use Geekk\PayselectionPaymentsPhp\Paylink\CustomerInfoData;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaylinkResult;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
-use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData\RecurringData;
+use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData;
 use Geekk\PayselectionPaymentsPhp\Recurring\UnsubscribeResult;
 use GuzzleHttp\Client;
 

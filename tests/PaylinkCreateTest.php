@@ -3,14 +3,14 @@
 namespace Geekk\PayselectionPaymentsPhp\Tests;
 
 use Geekk\PayselectionPaymentsPhp\Paylink\CustomerInfoData;
+use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestData;
+use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestExtraData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ClientData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\CompanyData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ItemData;
-use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData\RecurringData;
+use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData;
 use Geekk\PayselectionPaymentsPhp\PayselectionApi;
-use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestData;
-use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestExtraData;
 use Geekk\PayselectionPaymentsPhp\SignatureCreator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
