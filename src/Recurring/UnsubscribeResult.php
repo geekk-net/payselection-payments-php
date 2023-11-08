@@ -29,9 +29,9 @@ class UnsubscribeResult
         $data = json_decode($payload, true);
 
         $this->success = $data['TransactionState'] === "true";
-        
-        $this->errorDescription = 'Unknown error';
+
         if (!empty($data['Error'])) {
+            $this->errorDescription = 'Unknown error';
             $this->errorCode = $data['Error']['Code'] ?? null;
             if (!empty($data['Error']['Description'])) {
                 $this->errorDescription = $data['Error']['Description'];
