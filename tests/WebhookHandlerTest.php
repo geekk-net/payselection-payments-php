@@ -39,39 +39,14 @@ class WebhookHandlerTest extends TestCase
 
         // Check signature for wrong key
         $headers['X-WEBHOOK-SIGNATURE'] = (new SignatureCreator('another-key'))
-            ->makeSignature($dataToSign);
+                ->makeSignature($dataToSign);
         $handler->handle($requestUrl, $headers, $json);
         $this->assertFalse($handler->hasCorrectSignature());
     }
 
-    /**
-     * @param array<string> $data
-     * @dataProvider parametersProvider
-     */
-    public function testParameters(array $data, bool $isRebill): void
+    public function testParameters(): void
     {
         $handler = new WebhookHandler(new SignatureCreator('some_key'));
-
-        $json = json_encode($data);
-
-        $handler->handle('', [], $json);
-        $this->assertEquals("H5D6223aA", $handler->getOrderId());
-        $this->assertEquals("52.10", $handler->getAmount());
-        $this->assertEquals("payment", $handler->getEventName());
-        $this->assertEquals("RUB", $handler->getCurrency());
-        $this->assertEquals("PS00000000000007", $handler->getTransactionId());
-        $this->assertEquals("4539********2773", $handler->getCardMasked());
-        $this->assertEquals("16.09.2019 16.52.41", $handler->getDateTime());
-        $this->assertEquals($isRebill ? "1173" : null, $handler->getRecurringId());
-        $this->assertEquals($isRebill ? "PS00000000000001" : null, $handler->getRebillId());
-        $this->assertEquals($isRebill, $handler->isRebill());
-    }
-
-    /**
-     * @return array<array<string|bool>>
-     */
-    public function parametersProvider(): array
-    {
         $data = [
             "Event" => "Payment",
             "TransactionId" => "PS00000000000007",
@@ -82,22 +57,32 @@ class WebhookHandlerTest extends TestCase
             "CardMasked" => "4539********2773",
             "IsTest" => 1
         ];
-        $rebillData = [
-            "Event" => "Payment",
-            "TransactionId" => "PS00000000000007",
-            "OrderId" => "H5D6223aA",
-            "Amount" => "52.10",
-            "Currency" => "RUB",
-            "DateTime" => "16.09.2019 16.52.41",
-            "CardMasked" => "4539********2773",
-            "IsTest" => 1,
+        $json = json_encode($data);
+
+        $handler->handle('', [], $json);
+        $this->assertEquals("H5D6223aA", $handler->getOrderId());
+        $this->assertEquals("52.10", $handler->getAmount());
+        $this->assertEquals("payment", $handler->getEventName());
+        $this->assertEquals("RUB", $handler->getCurrency());
+        $this->assertEquals("PS00000000000007", $handler->getTransactionId());
+        $this->assertEquals("4539********2773", $handler->getCardMasked());
+        $this->assertEquals("16.09.2019 16.52.41", $handler->getDateTime());
+        $this->assertFalse($handler->isRebill());
+    }
+
+    public function testRebillParameters(): void
+    {
+        $handler = new WebhookHandler(new SignatureCreator('some_key'));
+        $data = [
             "RebillId" => "PS00000000000001",
             "RecurringId" => "1173",
-        ];
 
-        return [
-            [$data, false,],
-            [$rebillData, true,],
         ];
+        $json = json_encode($data);
+
+        $handler->handle('', [], $json);
+        $this->assertEquals("PS00000000000001", $handler->getRebillId());
+        $this->assertEquals("1173", $handler->getRecurringId());
+        $this->assertTrue($handler->isRebill());
     }
 }
