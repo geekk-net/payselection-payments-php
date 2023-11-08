@@ -7,6 +7,10 @@ use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
 
 class RecurringData
 {
+    const PERIOD_DAY = 'day';
+    const PERIOD_WEEK = 'week';
+    const PERIOD_MONTH = 'month';
+
     /**
      * @var float
      */
@@ -48,7 +52,7 @@ class RecurringData
     private $interval;
 
     /**
-     * @var PeriodEnum
+     * @var string
      */
     private $period;
 
@@ -68,7 +72,7 @@ class RecurringData
         string       $accountId,
         string       $startDate,
         string       $interval,
-        PeriodEnum   $period,
+        string       $period,
         ?string      $description = null,
         ?string      $webhookUrl = null,
         ?string      $email = null,
@@ -153,9 +157,9 @@ class RecurringData
     }
 
     /**
-     * @return PeriodEnum
+     * @return string
      */
-    public function getPeriod(): PeriodEnum
+    public function getPeriod(): string
     {
         return $this->period;
     }

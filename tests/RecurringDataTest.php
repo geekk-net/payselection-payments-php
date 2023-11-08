@@ -6,7 +6,6 @@ use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ClientData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\CompanyData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ItemData;
-use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData\PeriodEnum;
 use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData\RecurringData;
 use PHPUnit\Framework\TestCase;
 use DateTimeImmutable;
@@ -25,7 +24,7 @@ class RecurringDataTest extends TestCase
         $paymentDescription = 'Some digital goods';
         $startDate = (new DateTimeImmutable())->add(new DateInterval('P30D'))->format('d.m.Y H:i:s');
         $interval = '1';
-        $period = PeriodEnum::MONTH;
+        $period = RecurringData::PERIOD_MONTH;
         $maxPeriods = '12';
 
         $company = new CompanyData($inn, $shopUrl);

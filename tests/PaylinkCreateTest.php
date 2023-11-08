@@ -7,7 +7,6 @@ use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ClientData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\CompanyData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData\ItemData;
-use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData\PeriodEnum;
 use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData\RecurringData;
 use Geekk\PayselectionPaymentsPhp\PayselectionApi;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestData;
@@ -161,7 +160,7 @@ class PaylinkCreateTest extends TestCase
             $this->email,
             $startTime,
             '1',
-            PeriodEnum::MONTH,
+            RecurringData::PERIOD_MONTH,
             $this->description,
             'recurring_url',
             $this->email,
