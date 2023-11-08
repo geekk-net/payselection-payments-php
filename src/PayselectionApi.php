@@ -12,7 +12,7 @@ use GuzzleHttp\Client;
 
 class PayselectionApi
 {
-    const BASE_URL = 'https://webform.payselection.com';
+    const PAY_LINK_URL = 'https://webform.payselection.com';
     const API_URL = 'https://gw.payselection.com';
 
     /**
@@ -83,7 +83,7 @@ class PayselectionApi
             ]
         ];
 
-        $response = $this->client->request('POST', self::BASE_URL.$action, $options);
+        $response = $this->client->request('POST', self::PAY_LINK_URL.$action, $options);
 
         return new PaylinkResult($response->getStatusCode(), $response->getBody());
     }
