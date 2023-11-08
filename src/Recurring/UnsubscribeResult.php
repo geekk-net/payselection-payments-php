@@ -21,10 +21,9 @@ class UnsubscribeResult
     private $errorDescription = null;
 
     /**
-     * @param int $httpCode
      * @param ?string $payload
      */
-    public function __construct(int $httpCode, ?string $payload)
+    public function __construct(?string $payload)
     {
         $data = json_decode($payload, true);
 

@@ -55,8 +55,12 @@ class PaylinkCreateTest extends TestCase
     /**
      * @dataProvider createPaymentProvider
      */
-    public function testCreatePayment($paymentRequest, $receipt, $customerInfo, $recurringData): void
-    {
+    public function testCreatePayment(
+        PaymentRequestData $paymentRequest,
+        ReceiptData        $receipt,
+        CustomerInfoData   $customerInfo,
+        ?RecurringData     $recurringData
+    ): void {
         $container = [];
         $history = Middleware::history($container);
         $mock = new MockHandler([
@@ -131,6 +135,9 @@ class PaylinkCreateTest extends TestCase
         $this->assertTrue($paylinkResult->success());
     }
 
+    /**
+     * @return array<array{0: PaymentRequestData, 1: ReceiptData, 2:CustomerInfoData, 3?: RecurringData}>
+     */
     public function createPaymentProvider(): array
     {
         $paymentRequest = new PaymentRequestData($this->orderId, $this->amount, $this->currency, $this->description);

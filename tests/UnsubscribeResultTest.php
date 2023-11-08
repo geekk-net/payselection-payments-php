@@ -10,7 +10,7 @@ class UnsubscribeResultTest extends TestCase
 
     public function testSuccessResponse(): void
     {
-        $unsubscribeResult = new UnsubscribeResult(201, "{\"TransactionState\": \"true\"}");
+        $unsubscribeResult = new UnsubscribeResult("{\"TransactionState\": \"true\"}");
 
         $this->assertTrue($unsubscribeResult->success());
     }
@@ -25,7 +25,7 @@ class UnsubscribeResultTest extends TestCase
             ]
         ];
         $payload = json_encode($failData);
-        $unsubscribeResult = new UnsubscribeResult(201, $payload);
+        $unsubscribeResult = new UnsubscribeResult($payload);
 
         $this->assertFalse($unsubscribeResult->success());
         $this->assertEquals($failData["Error"]['Code'], $unsubscribeResult->getErrorCode());
