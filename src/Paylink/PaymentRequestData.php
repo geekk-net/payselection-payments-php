@@ -26,16 +26,27 @@ class PaymentRequestData
     private $description;
 
     /**
+     * @var bool
+     */
+    private $rebillFlag;
+
+    /**
      * @var ?PaymentRequestExtraData $extraData
      */
     private $extraData;
 
-    public function __construct(string $orderId, float $amount, string $currency, string $description)
-    {
+    public function __construct(
+        string $orderId,
+        float  $amount,
+        string $currency,
+        string $description,
+        bool   $rebillFlag = false
+    ) {
         $this->description = $description;
         $this->currency = strtoupper($currency);
         $this->amount = $amount;
         $this->orderId = $orderId;
+        $this->rebillFlag = $rebillFlag;
     }
 
     public function setExtraData(PaymentRequestExtraData $extraData): void
@@ -76,6 +87,14 @@ class PaymentRequestData
     }
 
     /**
+     * @return bool
+     */
+    public function getRebillFlag(): bool
+    {
+        return $this->rebillFlag;
+    }
+
+    /**
      * @return array<string, array<string, string>|string>
      */
     public function getBuiltData(): array
@@ -84,7 +103,8 @@ class PaymentRequestData
             "OrderId" => $this->getOrderId(),
             "Amount" => Formatter::floatToString($this->getAmount()),
             "Currency" => $this->getCurrency(),
-            "Description" => $this->getDescription()
+            "Description" => $this->getDescription(),
+            "RebillFlag" => $this->getRebillFlag()
         ];
 
         if (!empty($this->extraData)) {

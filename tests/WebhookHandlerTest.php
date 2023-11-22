@@ -67,5 +67,22 @@ class WebhookHandlerTest extends TestCase
         $this->assertEquals("PS00000000000007", $handler->getTransactionId());
         $this->assertEquals("4539********2773", $handler->getCardMasked());
         $this->assertEquals("16.09.2019 16.52.41", $handler->getDateTime());
+        $this->assertFalse($handler->isRebill());
+    }
+
+    public function testRebillParameters(): void
+    {
+        $handler = new WebhookHandler(new SignatureCreator('some_key'));
+        $data = [
+            "RebillId" => "PS00000000000001",
+            "RecurringId" => "1173",
+
+        ];
+        $json = json_encode($data);
+
+        $handler->handle('', [], $json);
+        $this->assertEquals("PS00000000000001", $handler->getRebillId());
+        $this->assertEquals("1173", $handler->getRecurringId());
+        $this->assertTrue($handler->isRebill());
     }
 }

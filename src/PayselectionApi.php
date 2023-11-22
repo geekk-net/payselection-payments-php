@@ -6,11 +6,14 @@ use Geekk\PayselectionPaymentsPhp\Paylink\CustomerInfoData;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaylinkResult;
 use Geekk\PayselectionPaymentsPhp\Paylink\PaymentRequestData;
 use Geekk\PayselectionPaymentsPhp\Paylink\ReceiptData;
+use Geekk\PayselectionPaymentsPhp\Paylink\RecurringData;
+use Geekk\PayselectionPaymentsPhp\Recurring\UnsubscribeResult;
 use GuzzleHttp\Client;
 
 class PayselectionApi
 {
-    const BASE_URL = 'https://webform.payselection.com';
+    const PAY_LINK_URL = 'https://webform.payselection.com';
+    const API_URL = 'https://gw.payselection.com';
 
     /**
      * @var string
@@ -42,7 +45,8 @@ class PayselectionApi
     public function createPaylink(
         PaymentRequestData $paymentRequestData,
         ?ReceiptData $receiptData = null,
-        ?CustomerInfoData $customerInfoData = null
+        ?CustomerInfoData $customerInfoData = null,
+        ?RecurringData $recurringData = null
     ): PaylinkResult {
 
         $action = '/webpayments/create';
@@ -56,6 +60,10 @@ class PayselectionApi
 
         if (!empty($customerInfoData)) {
             $data['CustomerInfo'] = $customerInfoData->getBuiltData();
+        }
+
+        if (!empty($recurringData)) {
+            $data['RecurringData'] = $recurringData->getBuiltData();
         }
 
         $requestId = $this->makeRequestId();
@@ -75,8 +83,37 @@ class PayselectionApi
             ]
         ];
 
-        $response = $this->client->request('POST', self::BASE_URL.$action, $options);
+        $response = $this->client->request('POST', self::PAY_LINK_URL.$action, $options);
 
         return new PaylinkResult($response->getStatusCode(), $response->getBody());
+    }
+
+    public function recurringUnsubscribe(string $rebillId): UnsubscribeResult
+    {
+        $action = '/payments/unsubscribe';
+        $data = [
+            'RebillId' => $rebillId,
+        ];
+
+        $requestId = $this->makeRequestId();
+        /**
+         * @var string $json
+         */
+        $json = json_encode($data);
+        $paramsToSign = ['POST', $action, $this->siteId, $requestId, $json];
+
+        $options = [
+            'http_errors' => false,
+            'json' => $data,
+            'headers' => [
+                'X-SITE-ID' => $this->siteId,
+                'X-REQUEST-ID' => $requestId,
+                'X-REQUEST-SIGNATURE' => $this->signatureCreator->makeSignature($paramsToSign)
+            ]
+        ];
+
+        $response = $this->client->request('POST', self::API_URL.$action, $options);
+
+        return new UnsubscribeResult($response->getBody());
     }
 }

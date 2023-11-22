@@ -122,6 +122,21 @@ class WebhookHandler
         return $this->data['CardMasked'] ?? null;
     }
 
+    public function getRebillId(): ?string
+    {
+        return $this->data['RebillId'] ?? null;
+    }
+
+    public function getRecurringId(): ?string
+    {
+        return $this->data['RecurringId'] ?? null;
+    }
+
+    public function isRebill(): bool
+    {
+        return !empty($this->getRecurringId());
+    }
+
     /**
      * @return string[]
      */
