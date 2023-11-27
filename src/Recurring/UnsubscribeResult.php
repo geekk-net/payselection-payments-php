@@ -4,6 +4,10 @@ namespace Geekk\PayselectionPaymentsPhp\Recurring;
 
 class UnsubscribeResult
 {
+    /**
+     * @var string|null
+     */
+    private $payload;
 
     /**
      * @var bool
@@ -25,9 +29,11 @@ class UnsubscribeResult
      */
     public function __construct(?string $payload)
     {
+        $this->payload = $payload;
+
         $data = json_decode($payload, true);
 
-        $this->success = $data['TransactionState'] === "true";
+        $this->success = $data['TransactionState'] == "true";
 
         if (!empty($data['Error'])) {
             $this->errorDescription = 'Unknown error';
@@ -51,5 +57,10 @@ class UnsubscribeResult
     public function getErrorDescription(): ?string
     {
         return $this->errorDescription;
+    }
+
+    public function getPayload(): ?string
+    {
+        return $this->payload;
     }
 }
