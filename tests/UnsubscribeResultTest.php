@@ -8,9 +8,12 @@ use PHPUnit\Framework\TestCase;
 class UnsubscribeResultTest extends TestCase
 {
 
-    public function testSuccessResponse(): void
+    /**
+     * @dataProvider unsubscribeResultProvider
+     */
+    public function testSuccessResponse(string $data): void
     {
-        $unsubscribeResult = new UnsubscribeResult("{\"TransactionState\": \"true\"}");
+        $unsubscribeResult = new UnsubscribeResult($data);
 
         $this->assertTrue($unsubscribeResult->success());
     }
@@ -30,5 +33,16 @@ class UnsubscribeResultTest extends TestCase
         $this->assertFalse($unsubscribeResult->success());
         $this->assertEquals($failData["Error"]['Code'], $unsubscribeResult->getErrorCode());
         $this->assertEquals($failData["Error"]['Description'], $unsubscribeResult->getErrorDescription());
+    }
+
+    /**
+     * @return array<array{0: string}>
+     */
+    public function unsubscribeResultProvider(): array
+    {
+        return [
+            ["{\"TransactionState\": \"true\"}"],
+            ["{\"TransactionState\": true}"],
+        ];
     }
 }
