@@ -10,7 +10,7 @@ class UnsubscribeResultTest extends TestCase
     /**
      * @dataProvider unsubscribeResultProvider
      */
-    public function testErrorResponse(
+    public function testUnsubscribeResponse(
         bool    $isSuccess,
         int     $httpCode,
         string  $payload,
