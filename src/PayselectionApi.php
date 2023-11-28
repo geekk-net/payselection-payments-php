@@ -114,6 +114,6 @@ class PayselectionApi
 
         $response = $this->client->request('POST', self::API_URL.$action, $options);
 
-        return new UnsubscribeResult($response->getBody());
+        return new UnsubscribeResult($response->getStatusCode(), $response->getBody());
     }
 }

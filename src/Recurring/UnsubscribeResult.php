@@ -25,22 +25,36 @@ class UnsubscribeResult
     private $errorDescription = null;
 
     /**
+     * @var array<string, string>
+     */
+    private $addDetails;
+
+
+    /**
+     * @param int $httpCode
      * @param ?string $payload
      */
-    public function __construct(?string $payload)
+    public function __construct(int $httpCode, ?string $payload)
     {
         $this->payload = $payload;
 
         $data = json_decode($payload, true);
 
-        $this->success = $data['TransactionState'] == "true";
+        if ($httpCode == 201) {
+            $this->success = $data['TransactionState'] === true || $data['TransactionState'] === "true";
 
-        if (!empty($data['Error'])) {
-            $this->errorDescription = 'Unknown error';
-            $this->errorCode = $data['Error']['Code'] ?? null;
-            if (!empty($data['Error']['Description'])) {
-                $this->errorDescription = $data['Error']['Description'];
+            if (!empty($data['Error'])) {
+                $this->errorDescription = 'Unknown error';
+                $this->errorCode = $data['Error']['Code'] ?? null;
+                if (!empty($data['Error']['Description'])) {
+                    $this->errorDescription = $data['Error']['Description'];
+                }
             }
+        } else {
+            $this->success = false;
+            $this->errorCode = $data['Code'] ?? null;
+            $this->errorDescription = $data['Description'] ?? null;
+            $this->addDetails = $data['AddDetails'] ?? [];
         }
     }
 
@@ -57,6 +71,16 @@ class UnsubscribeResult
     public function getErrorDescription(): ?string
     {
         return $this->errorDescription;
+    }
+
+    public function getAddDetailsStatus(): ?string
+    {
+        return $this->addDetails['Status'] ?? null;
+    }
+
+    public function isAlreadyCanceled(): bool
+    {
+        return $this->getErrorCode() == 'RecurrentStatusError' && $this->getAddDetailsStatus() == 'canceled';
     }
 
     public function getPayload(): ?string
