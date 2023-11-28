@@ -27,7 +27,7 @@ class UnsubscribeResult
     /**
      * @var array<string, string>
      */
-    private $addDetails;
+    private $addDetails = [];
 
 
     /**
